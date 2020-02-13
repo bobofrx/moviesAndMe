@@ -1,7 +1,7 @@
 // components/Search.js
 import React from 'react'
 import { StyleSheet, View, TextInput, Button, Text, FlatList } from 'react-native'
-import films from '../helpers/filmsData'
+import films from '../helpers/FilmsData'
 import FilmItem from './FilmItem'
 
 class Search extends React.Component {
@@ -25,7 +25,7 @@ class Search extends React.Component {
 const styles = StyleSheet.create({
     main_container: {
         flex: 1,
-        marginTop: 20
+        marginTop: 25
     },
     textInput: {
         marginLeft: 5, 
