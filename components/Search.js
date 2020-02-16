@@ -1,6 +1,6 @@
 // components/Search.js
 import React from 'react'
-import { StyleSheet, View, TextInput, Button, Text, FlatList } from 'react-native'
+import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator } from 'react-native'
 import FilmItem from './FilmItem'
 import { getFilmsFromApiWithSearchedText } from '../api/TMDBApi'
 
@@ -10,13 +10,14 @@ class Search extends React.Component {
     constructor(props) {
         super(props)
         this.searchText = ""
-        this.state = { films: [] }
+        this.state = { films: [], isloading: false }
     }
 
     _loadFilms() {
         if (this.searchText.length > 0) {
+            this.setState({ isloading: true })
             getFilmsFromApiWithSearchedText(this.searchText).then(data => {
-                this.setState({ films: data.results })
+                this.setState({ films: data.results, isloading: false })
             })
         }
     }
@@ -25,8 +26,17 @@ class Search extends React.Component {
         this.searchText = text
     }
 
+    _displayLoading() {
+        if(this.state.isloading){
+            return (
+                <View style={styles.loading_container} >
+                    <ActivityIndicator size='large' />
+                </View>
+            )
+        }
+    }
+
     render() {
-        console.log("RENDER")
         return (
             //return les éléments grahiques
             <View style={styles.main_container}>
@@ -38,6 +48,7 @@ class Search extends React.Component {
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item}) => <FilmItem film={item}/>}
                 />
+                {this._displayLoading()}
             </View>
         )
     }
@@ -55,7 +66,16 @@ const styles = StyleSheet.create({
         borderColor: '#000000', 
         borderWidth: 1, 
         paddingLeft: 5
-    }
+    },
+    loading_container: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 100,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }
 })
 
 export default Search
