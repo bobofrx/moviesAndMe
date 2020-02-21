@@ -1,8 +1,8 @@
 // components/FilmDetail.js
 
 import React from 'react'
-import { StyleSheet, View, ActivityIndicator, ScrollView, Text } from 'react-native'
-import { getFilmDetailFromApi } from '../api/TMDBApi';
+import { StyleSheet, View, ActivityIndicator, ScrollView, Text, Image } from 'react-native'
+import { getFilmDetailFromApi, getImageFromApi } from '../api/TMDBApi';
 
 class FilmDetail extends React.Component {
 
@@ -25,10 +25,19 @@ class FilmDetail extends React.Component {
     }
 
     _displayFilm() {
-        if(this.state.film != undefined) {
+        const { film } = this.state
+        if(film != undefined) {
             return (
                 <ScrollView style={styles.scrollView_container}>
-                    <Text >{this.state.film.title}</Text>
+                    <Image style={styles.image} source={{uri : getImageFromApi(film.backdrop_path)}}></Image>
+                    <Text style={styles.titre}>{film.title}</Text>
+                    <Text style={styles.description_text} >{film.overview}</Text>
+                    <Text>Sorti le </Text>
+                    <Text>Note :</Text>
+                    <Text>Nombres de votes : </Text>
+                    <Text>Budget : </Text>
+                    <Text>Genre(s) : </Text>
+                    <Text>Companie(s) : </Text>
                 </ScrollView>
             )
         }
@@ -69,7 +78,23 @@ const styles = StyleSheet.create({
     },
     scrollView_container : {
         flex: 1
-    }
+    },
+    image : {
+        height: 169,
+        margin: 5
+    },
+    titre : {
+        textAlign: "center",
+        alignItems: "center",
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+    description_text: {
+      fontStyle: 'italic',
+      color: '#666666',
+      margin: 5,
+      marginTop: 10
+    },
 })
 
 export default FilmDetail
