@@ -3,6 +3,8 @@
 import React from 'react'
 import { StyleSheet, View, ActivityIndicator, ScrollView, Text, Image } from 'react-native'
 import { getFilmDetailFromApi, getImageFromApi } from '../api/TMDBApi';
+import numeral from 'numeral'
+import moment from 'moment'
 
 class FilmDetail extends React.Component {
 
@@ -32,12 +34,12 @@ class FilmDetail extends React.Component {
                     <Image style={styles.image} source={{uri : getImageFromApi(film.backdrop_path)}}></Image>
                     <Text style={styles.titre}>{film.title}</Text>
                     <Text style={styles.description_text} >{film.overview}</Text>
-                    <Text>Sorti le </Text>
-                    <Text>Note :</Text>
-                    <Text>Nombres de votes : </Text>
-                    <Text>Budget : </Text>
-                    <Text>Genre(s) : </Text>
-                    <Text>Companie(s) : </Text>
+                    <Text>Sorti le {moment(new Date(film.release_date)).format('DD/MM/YYYY')}</Text>
+                    <Text>Note : {film.vote_average} / 10</Text>
+                    <Text>Nombres de votes : {film.vote_count}</Text>
+                    <Text>Budget : {numeral(film.budget).format('0,0[.]00 $')}</Text>
+                    <Text>Genre(s) : {film.genres.map(function(genre){ return genre.name; }).join(" / ")} </Text>
+                    <Text>Companie(s) : {film.production_companies.map(function(company){ return company.name; }).join(" / ")} </Text>
                 </ScrollView>
             )
         }
