@@ -34,12 +34,12 @@ class FilmDetail extends React.Component {
                     <Image style={styles.image} source={{uri : getImageFromApi(film.backdrop_path)}}></Image>
                     <Text style={styles.titre}>{film.title}</Text>
                     <Text style={styles.description_text} >{film.overview}</Text>
-                    <Text>Sorti le {moment(new Date(film.release_date)).format('DD/MM/YYYY')}</Text>
-                    <Text>Note : {film.vote_average} / 10</Text>
-                    <Text>Nombres de votes : {film.vote_count}</Text>
-                    <Text>Budget : {numeral(film.budget).format('0,0[.]00 $')}</Text>
-                    <Text>Genre(s) : {film.genres.map(function(genre){ return genre.name; }).join(" / ")} </Text>
-                    <Text>Companie(s) : {film.production_companies.map(function(company){ return company.name; }).join(" / ")} </Text>
+                    <Text style={styles.default_text}>Sorti le {moment(new Date(film.release_date)).format('DD/MM/YYYY')}</Text>
+                    <Text style={styles.default_text}>Note : {film.vote_average} / 10</Text>
+                    <Text style={styles.default_text}>Nombres de votes : {film.vote_count}</Text>
+                    <Text style={styles.default_text}>Budget : {numeral(film.budget).format('0,0[.]00 $')}</Text>
+                    <Text style={styles.default_text}>Genre(s) : {film.genres.map(function(genre){ return genre.name; }).join(" / ")} </Text>
+                    <Text style={styles.default_text}>Companie(s) : {film.production_companies.map(function(company){ return company.name; }).join(" / ")} </Text>
                 </ScrollView>
             )
         }
@@ -97,6 +97,11 @@ const styles = StyleSheet.create({
       margin: 5,
       marginTop: 10
     },
+    default_text: {
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 5
+    }
 })
 
 export default FilmDetail
