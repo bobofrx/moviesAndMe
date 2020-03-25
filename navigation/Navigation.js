@@ -13,7 +13,10 @@ const SearchStackNavigator = createStackNavigator({
         }
     },
     FilmDetail : {
-        screen: FilmDetail
+        screen: FilmDetail,
+        navigationOptions: {
+            title: ''
+        }
     }
 })
 
