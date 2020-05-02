@@ -6,6 +6,7 @@ import { getFilmDetailFromApi, getImageFromApi } from '../api/TMDBApi';
 import numeral from 'numeral'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class FilmDetail extends React.Component {
 
@@ -41,7 +42,7 @@ class FilmDetail extends React.Component {
                 <ScrollView style={styles.scrollView_container}>
                     <Image style={styles.image} source={{uri : getImageFromApi(film.backdrop_path)}}></Image>
                     <Text style={styles.titre}>{film.title}</Text>
-                    <Button title="Favoris" onPress={() => this._toggleFavorite()}/>
+                    <TouchableOpacity style={styles.favorite_container} onPress={() => this._toggleFavorite()}>{this._displayFavoriteImage()}</TouchableOpacity>
                     <Text style={styles.description_text} >{film.overview}</Text>
                     <Text style={styles.default_text}>Sorti le {moment(new Date(film.release_date)).format('DD/MM/YYYY')}</Text>
                     <Text style={styles.default_text}>Note : {film.vote_average} / 10</Text>
@@ -52,6 +53,17 @@ class FilmDetail extends React.Component {
                 </ScrollView>
             )
         }
+    }
+
+    _displayFavoriteImage() {
+        var sourceImage = require('../images/ic_favorite_border.png')
+        if(this.props.favoritesFilm.findIndex(item => item.id === this.state.film.id) !== -1) {
+            // film dans les favoris
+            sourceImage = require('../images/ic_favorite.png')
+        }
+        return (
+            <Image style={styles.favorite_image} source={sourceImage} />
+        )
     }
 
     componentDidMount() {
@@ -65,8 +77,8 @@ class FilmDetail extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log("componentdidupdate : ")
-        console.log(this.props.favoritesFilm)
+       // console.log("componentdidupdate : ")
+        //console.log(this.props.favoritesFilm)
     }
 
     render() {
@@ -115,6 +127,13 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         marginTop: 5
+    },
+    favorite_container: {
+        alignItems: 'center'
+    },
+    favorite_image: {
+        width: 40,
+        height: 40
     }
 })
 
