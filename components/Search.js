@@ -4,6 +4,7 @@ import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator 
 import FilmItem from './FilmItem'
 import { getFilmsFromApiWithSearchedText } from '../api/TMDBApi'
 import {connect} from 'react-redux'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 class Search extends React.Component {
@@ -13,7 +14,21 @@ class Search extends React.Component {
         this.searchText = ""
         this.page = 0
         this.totalPages = 0
-        this.state = { films: [], isloading: false }
+        this.state = { films: [], isloading: false, isFocused: false }
+    }
+
+    handleFocus = event => {
+        this.setState({ isFocused: true })
+        if(this.props.onFocus){
+            this.props.onFocus(event)
+        }
+    }
+
+    handleBlur = event => {
+        this.setState({ isFocused: false })
+        if(this.props.onBlur){
+            this.props.onBlur(event)
+        }
     }
 
     _loadFilms() {
@@ -63,12 +78,17 @@ class Search extends React.Component {
 
     render() {
         //console.log(this.props)
+        const { isFocused } = this.state
         return (
             //return les éléments grahiques
             <View style={styles.main_container}>
-                <TextInput style={styles.textInput} placeholder='Titre du film' onChangeText={(text) => this._searchTextInputChanged(text)} onSubmitEditing={() => this._searchFilms() } />
-                <Button title='Rechercher' onPress={() => this._searchFilms() } />
-
+                <TextInput style={styles.textInput} placeholder='Titre du film' underlineColorAndroid={isFocused ? '#00BFFF' : '#D3D3D3'} onFocus={this.handleFocus} onBlur={this.handleBlur} onChangeText={(text) => this._searchTextInputChanged(text)} onSubmitEditing={() => this._searchFilms() } />
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this._searchFilms() }
+                >
+                    <Text style={styles.couleurbutton}>Rechercher</Text>
+                </TouchableOpacity>
                 <FlatList 
                     data={this.state.films}
                     extraData={this.props.favoritesFilm}
@@ -92,12 +112,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     textInput: {
-        marginLeft: 5, 
-        marginRight: 5, 
-        height: 50, 
-        borderColor: '#000000', 
-        borderWidth: 1, 
-        paddingLeft: 5
+        height: 40, 
+        paddingLeft: 6
     },
     loading_container: {
         position: 'absolute',
@@ -107,6 +123,14 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center'
+      },
+      button: {
+        alignItems: "center",
+        backgroundColor: "transparent",
+        padding: 10
+      },
+      couleurbutton: {
+        color: "#00BFFF"
       }
 })
 
