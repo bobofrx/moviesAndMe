@@ -11,10 +11,11 @@ class Search extends React.Component {
 
     constructor(props) {
         super(props)
-        this.searchText = ""
+        this.searchedText  = ""
         this.page = 0
         this.totalPages = 0
         this.state = { films: [], isloading: false, isFocused: false }
+        this._loadFilms = this._loadFilms.bind(this)
     }
 
     handleFocus = event => {
@@ -32,9 +33,9 @@ class Search extends React.Component {
     }
 
     _loadFilms() {
-        if (this.searchText.length > 0) {
+        if (this.searchedText.length > 0) {
             this.setState({ isloading: true })
-            getFilmsFromApiWithSearchedText(this.searchText, this.page+1).then(data => {
+            getFilmsFromApiWithSearchedText(this.searchedText, this.page+1).then(data => {
                 this.page = data.page
                 this.totalPages = data.total_pages
                 this.setState({
@@ -46,7 +47,7 @@ class Search extends React.Component {
     }
 
     _searchTextInputChanged(text) {
-        this.searchText = text
+        this.searchedText = text
     }
 
     _displayLoading() {
@@ -60,8 +61,8 @@ class Search extends React.Component {
     }
 
     _searchFilms() {
-        this.page=0
-        this.totalPages=0
+        this.page = 0
+        this.totalPages = 0
         this.setState({ 
             films: [] 
         }, () => {
